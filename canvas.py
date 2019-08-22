@@ -2,7 +2,7 @@ from random import random
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
-from kivy.graphics import Color, Ellipse, Line
+from kivy.graphics import Color, Ellipse, Line, Rectangle
 from kivy.uix.floatlayout import FloatLayout
 from functools import partial
 global X, Y
@@ -11,6 +11,12 @@ X = 400
 Y = 400
 
 class Canvas(Widget):
+
+    def boundary(self):
+        self.canvas.add(Color(1, 5, 3))
+        self.canvas.add(Rectangle(pos=(100, 0), size=(600, 600)))
+        self.canvas.add(Color(1., 1., 0))
+        self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
 
     def paint(self, token, event):
         color = (1, 1, 1)  #Red Color
@@ -30,10 +36,14 @@ class Canvas(Widget):
         with self.canvas:
           
           #Temporary Boundaries Example
-            if(X>500):
+            if(X>600):
                 X = 600
+            if(X<200):
+                X=200
             if(Y>500):
-                Y = 600
+                Y = 500
+            if(Y<300):
+                Y=300
 
             Color(*color, mode='hsv')
             d = 5.  #diameter of ellipse
@@ -49,7 +59,7 @@ class Arrows(FloatLayout):
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-
+        self.painter.boundary()
         self.left_button = Button(text="Left", pos_hint= {'x': .35,'top': .3}, size_hint = (.1,.1))
         self.top_button = Button(text="Top", pos_hint= {'x': .45,'top': .4}, size_hint = (.1,.1))
         self.bottom_button = Button(text="Bottom", pos_hint= {'x': .45,'top': .2}, size_hint = (.1,.1))
@@ -85,10 +95,12 @@ class Arrows(FloatLayout):
     
     def clear_canvas(self, obj):
         self.painter.canvas.clear()
+        self.painter.boundary()
         global X,Y 
         X = 400
         Y = 400
     
     def button_click(self, event):
         self.center_button.text = event.text
+
 
