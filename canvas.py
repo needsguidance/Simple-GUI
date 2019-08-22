@@ -6,6 +6,7 @@ from kivy.graphics import Color, Ellipse, Line
 from kivy.uix.floatlayout import FloatLayout
 from functools import partial
 global X, Y
+#Initial coords.
 X = 400
 Y = 400
 
