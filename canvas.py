@@ -39,6 +39,7 @@ class Canvas(Widget):
             d = 5.  #diameter of ellipse
             Ellipse(pos=(X - d / 2, Y - d / 2), size=(d, d))  #Draws mini circles to make a Line (Line command cant be used for one coord pixels/position)
 
+#------------------Christian's arrows implementation integrated-----------------
 
 class Arrows(FloatLayout):
   
@@ -48,7 +49,7 @@ class Arrows(FloatLayout):
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-        #------Christian's arrows implementation-----------
+
         self.left_button = Button(text="Left", pos_hint= {'x': .35,'top': .3}, size_hint = (.1,.1))
         self.top_button = Button(text="Top", pos_hint= {'x': .45,'top': .4}, size_hint = (.1,.1))
         self.bottom_button = Button(text="Bottom", pos_hint= {'x': .45,'top': .2}, size_hint = (.1,.1))
