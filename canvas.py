@@ -49,13 +49,13 @@ class Arrows(FloatLayout):
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-
-        self.left_button = Button(text="Left", pos_hint= {'x': .35,'top': .3}, size_hint = (.1,.1))
-        self.top_button = Button(text="Top", pos_hint= {'x': .45,'top': .4}, size_hint = (.1,.1))
-        self.bottom_button = Button(text="Bottom", pos_hint= {'x': .45,'top': .2}, size_hint = (.1,.1))
-        self.center_button = Button(text="Center", pos_hint= {'x': .45,'top': .3}, size_hint = (.1,.1), disabled = True)
-        self.right_button = Button(text="Right", pos_hint= {'x': .55,'top': .3}, size_hint = (.1,.1))
-        self.clear_button = Button(text="Clear", pos_hint= {'x': .9,'top': .3}, size_hint = (.05,.05))
+        button_color = (0, 255, 255, .5)
+        self.left_button = Button(text="Left", pos_hint= {'x': .35,'top': .3}, size_hint = (.1,.1), background_color=button_color)
+        self.top_button = Button(text="Top", pos_hint= {'x': .45,'top': .4}, size_hint = (.1,.1), background_color=button_color)
+        self.bottom_button = Button(text="Bottom", pos_hint= {'x': .45,'top': .2}, size_hint = (.1,.1), background_color=button_color)
+        self.center_button = Button(text="Center", pos_hint= {'x': .45,'top': .3}, size_hint = (.1,.1), background_color=button_color,disabled = True)
+        self.right_button = Button(text="Right", pos_hint= {'x': .55,'top': .3}, size_hint = (.1,.1), background_color=button_color)
+        self.clear_button = Button(text="Clear", pos_hint= {'x': .8,'top': .3}, size_hint = (.1,.1), background_color=button_color)
 
         self.add_widget(parent)
         self.add_widget(self.clear_button)
@@ -88,7 +88,8 @@ class Arrows(FloatLayout):
         global X,Y 
         X = 400
         Y = 400
-    
+        self.center_button.text = 'Center'
+
     def button_click(self, event):
         self.center_button.text = event.text
 
