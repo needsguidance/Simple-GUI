@@ -11,36 +11,45 @@ from kivy.uix.widget import Widget
 global X, Y, color
 color = (1, 1, 1)  # Red Color
 # Initial coords.
-X = 400
 Y = 400
+X = 400
 
 
 class Canvas(Widget):
 
-    def paint(self, event):
+    def paint(self, event, w, h):
         token = event.id
         # color = (1, 1, 1)  # Red Color
         global X, Y
+
 
         # Increase/Decrease of coordinates dependant on token value passed on button press
 
         if token == 'left':
             X -= 2
-        if token == 'right':
+        elif token == 'right':
             X += 2
-        if token == 'top':
+        elif token == 'top':
             Y += 2
-        if token == 'bottom':
+        elif token == 'bottom':
             Y -= 2
 
         with self.canvas:
 
             # Temporary Boundaries Example
-            if X > 500:
-                X = 600
-            if Y > 500:
-                Y = 600
-
+            print(w,h)
+            if X > w - w/4:
+                X = w - w/4
+                print("right")
+            elif Y > h - h/8:
+                Y = h - h/8
+                print("up")
+            elif X < w/4:
+                X = w/4
+                print("left")
+            elif Y < h/2:
+                Y = h/2
+                print("down")
             Color(*color, mode='hsv')
             d = 5.  # diameter of ellipse
 
@@ -94,9 +103,9 @@ class Arrows(FloatLayout):
     def clear_canvas(self, obj):
         self.painter.canvas.clear()
         global X, Y
-        X = 400
-        Y = 400
         self.label.text = 'Center'
+        X = self.width/2
+        Y = self.height/1.5
 
     def _on_press(self, event):
         """
@@ -126,7 +135,8 @@ class Arrows(FloatLayout):
         :param event: button event
         :param dt: delta-time
         """
-        self.painter.paint(event)
+
+        self.painter.paint(event, self.width, self.height)
 
     def change_arrow_color(self, event):
         """
