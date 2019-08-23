@@ -1,4 +1,5 @@
 from functools import partial
+from random import random
 
 from kivy.clock import Clock
 from kivy.uix.button import Button
@@ -7,7 +8,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
-
+global X, Y, color
+color = (1, 1, 1)  # Red Color
 # Initial coords.
 Y = 400
 X = 400
@@ -15,16 +17,16 @@ X = 400
 
 class Canvas(Widget):
 
-    def boundary(self, w, h):
-        self.canvas.add(Color(1, 5, 3))
-        self.canvas.add(Rectangle(pos=(100, 0), size=(w, h)))
-        self.canvas.add(Color(1., 1., 0))
-        self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
+    # def boundary(self, w, h):
+    #     self.canvas.add(Color(1, 5, 3))
+    #     self.canvas.add(Rectangle(pos=(100, 0), size=(w, h)))
+    #     self.canvas.add(Color(1., 1., 0))
+    #     self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
 
 
     def paint(self, event, w, h):
         token = event.id
-        color = (1, 1, 1)  # Red Color
+        # color = (1, 1, 1)  # Red Color
         global X, Y
 
 
@@ -52,8 +54,8 @@ class Canvas(Widget):
             elif X < w/4:
                 X = w/4
                 print("left")
-            elif Y < h/2:
-                Y = h/2
+            elif Y < h/1.95:
+                Y = h/1.95
                 print("down")
             Color(*color, mode='hsv')
             d = 5.  # diameter of ellipse
@@ -71,18 +73,25 @@ class Arrows(FloatLayout):
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-        self.painter.boundary(self.width, self.height)
+        # self.painter.boundary(self.width, self.height)
 
-
-
-        self.left_button = Button(text="Left", pos_hint={'x': .35, 'top': .3}, size_hint=(.1, .1), id='left')
-        self.top_button = Button(text="Top", pos_hint={'x': .45, 'top': .4}, size_hint=(.1, .1), id='top')
-        self.bottom_button = Button(text="Bottom", pos_hint={'x': .45, 'top': .2}, size_hint=(.1, .1), id='bottom')
+        button_color = (0, 255, 255, .5)
+        self.left_button = Button(text="Left", pos_hint={'x': .35, 'top': .3}, size_hint=(.1, .1), id='left',
+                                  background_color=button_color)
+        self.top_button = Button(text="Top", pos_hint={'x': .45, 'top': .4}, size_hint=(.1, .1), id='top',
+                                 background_color=button_color)
+        self.bottom_button = Button(text="Bottom", pos_hint={'x': .45, 'top': .2}, size_hint=(.1, .1), id='bottom',
+                                    background_color=button_color)
         self.label = Label(text="Center", pos_hint={'x': .45, 'top': .3}, size_hint=(.1, .1))
-        self.right_button = Button(text="Right", pos_hint={'x': .55, 'top': .3}, size_hint=(.1, .1), id='right')
-        self.clear_button = Button(text="Clear", pos_hint={'x': .9, 'top': .3}, size_hint=(.05, .05), id='clear')
+        self.right_button = Button(text="Right", pos_hint={'x': .55, 'top': .3}, size_hint=(.1, .1), id='right',
+                                   background_color=button_color)
+        self.speed_button = Button(text="Speed", pos_hint={'x': .35, 'top': .5}, size_hint=(.1, .05), id='speed')
+        self.change_color_button = Button(text="Color", pos_hint={'x': .45, 'top': .5}, size_hint=(.1, .05), id='color')
+        self.clear_button = Button(text="Clear", pos_hint={'x': .55, 'top': .5}, size_hint=(.1, .05), id='clear')
 
         self.add_widget(parent)
+        self.add_widget(self.speed_button)
+        self.add_widget(self.change_color_button)
         self.add_widget(self.clear_button)
         self.add_widget(self.left_button)
         self.add_widget(self.top_button)
@@ -90,6 +99,10 @@ class Arrows(FloatLayout):
         self.add_widget(self.label)
         self.add_widget(self.right_button)
 
+        # TODO: Add function for change color button
+        self.change_color_button.bind(on_press=self.change_arrow_color)
+        # TODO: Add function for change speed button
+        # self.speed_button.bind(on_press=self.change_arrow_speed)
         self.clear_button.bind(on_release=self.clear_canvas)
         self.left_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.top_button.bind(on_press=self._on_press, on_release=self._on_release)
@@ -99,8 +112,9 @@ class Arrows(FloatLayout):
 
     def clear_canvas(self, obj):
         self.painter.canvas.clear()
-        self.painter.boundary(self.width, self.height)
+        # self.painter.boundary(self.width, self.height)
         global X, Y
+        self.label.text = 'Center'
         X = self.width/2
         Y = self.height/1.5
 
@@ -133,4 +147,13 @@ class Arrows(FloatLayout):
         :param event: button event
         :param dt: delta-time
         """
+
         self.painter.paint(event, self.width, self.height)
+
+    def change_arrow_color(self, event):
+        """
+        Change arrow color on button event
+        :param event: button event
+        """
+        global color
+        color = (random(), 1, 1)
