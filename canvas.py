@@ -15,9 +15,9 @@ X = 400
 
 class Canvas(Widget):
 
-    def boundary(self):
+    def boundary(self, w, h):
         self.canvas.add(Color(1, 5, 3))
-        self.canvas.add(Rectangle(pos=(100, 0), size=(600, 600)))
+        self.canvas.add(Rectangle(pos=(100, 0), size=(w, h)))
         self.canvas.add(Color(1., 1., 0))
         self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
 
@@ -66,12 +66,12 @@ class Arrows(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        print(self.width,self.height)
         self.button_event = None
-
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-        self.painter.boundary()
+        self.painter.boundary(self.width, self.height)
 
 
 
@@ -96,12 +96,14 @@ class Arrows(FloatLayout):
         self.bottom_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.right_button.bind(on_press=self._on_press, on_release=self._on_release)
 
+
     def clear_canvas(self, obj):
         self.painter.canvas.clear()
-        self.painter.boundary()
+        self.painter.boundary(self.width, self.height)
         global X, Y
         X = self.width/2
         Y = self.height/1.5
+
 
     def _on_press(self, event):
         """
