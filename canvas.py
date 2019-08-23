@@ -34,9 +34,9 @@ class Canvas(Widget):
         with self.canvas:
 
             # Temporary Boundaries Example
-            if X > 500:
+            if X > 600:
                 X = 600
-            if Y > 500:
+            if Y > 600:
                 Y = 600
 
             Color(*color, mode='hsv')
