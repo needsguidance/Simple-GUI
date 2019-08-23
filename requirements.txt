@@ -4,4 +4,5 @@ pypiwin32
 kivy_deps.sdl2
 kivy_deps.gstreamer
 kivy_deps.angle
+kivy-deps.glew
 pylint
