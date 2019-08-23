@@ -61,9 +61,14 @@ class Arrows(FloatLayout):
         self.bottom_button = Button(text="Bottom", pos_hint={'x': .45, 'top': .2}, size_hint=(.1, .1), id='bottom', background_color=button_color)
         self.label = Label(text="Center", pos_hint={'x': .45, 'top': .3}, size_hint=(.1, .1))
         self.right_button = Button(text="Right", pos_hint={'x': .55, 'top': .3}, size_hint=(.1, .1), id='right', background_color=button_color)
-        self.clear_button = Button(text="Clear", pos_hint={'x': .9, 'top': .3}, size_hint=(.05, .05), id='clear')
+        self.speed_button = Button(text="Speed", pos_hint={'x': .35, 'top': .5}, size_hint=(.1, .05), id='speed')
+        self.change_color_button = Button(text="Color", pos_hint={'x': .45, 'top': .5}, size_hint=(.1, .05), id='color')
+        self.clear_button = Button(text="Clear", pos_hint={'x': .55, 'top': .5}, size_hint=(.1, .05), id='clear')
+
 
         self.add_widget(parent)
+        self.add_widget(self.speed_button)
+        self.add_widget(self.change_color_button)
         self.add_widget(self.clear_button)
         self.add_widget(self.left_button)
         self.add_widget(self.top_button)
@@ -71,6 +76,10 @@ class Arrows(FloatLayout):
         self.add_widget(self.label)
         self.add_widget(self.right_button)
 
+        # TODO: Add function for change color button
+        # self.change_color_button.bind()
+        # TODO: Add function for change speed button
+        # self.speed_button.bind()
         self.clear_button.bind(on_release=self.clear_canvas)
         self.left_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.top_button.bind(on_press=self._on_press, on_release=self._on_release)
@@ -82,7 +91,7 @@ class Arrows(FloatLayout):
         global X, Y
         X = 400
         Y = 400
-        self.center_button.text = 'Center'
+        self.label.text = 'Center'
 
     def _on_press(self, event):
         """
