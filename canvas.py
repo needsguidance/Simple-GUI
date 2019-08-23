@@ -1,8 +1,6 @@
-from random import random
-from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
-from kivy.graphics import Color, Ellipse, Line
+from kivy.graphics import Color, Ellipse
 from kivy.uix.floatlayout import FloatLayout
 from functools import partial
 global X, Y
@@ -30,9 +28,9 @@ class Canvas(Widget):
         with self.canvas:
           
           #Temporary Boundaries Example
-            if(X>500):
+            if(X>600):
                 X = 600
-            if(Y>500):
+            if(Y>600):
                 Y = 600
 
             Color(*color, mode='hsv')
@@ -85,7 +83,8 @@ class Arrows(FloatLayout):
     
     def clear_canvas(self, obj):
         self.painter.canvas.clear()
-        global X,Y 
+        global X,Y
+        self.center_button.text = 'Center'
         X = 400
         Y = 400
     

@@ -5,3 +5,4 @@ kivy_deps.sdl2
 kivy_deps.gstreamer
 kivy_deps.angle
 pylint
+kivy-deps.glew
