@@ -17,11 +17,11 @@ X = 400
 
 class Canvas(Widget):
 
-    # def boundary(self, w, h):
-    #     self.canvas.add(Color(1, 5, 3))
-    #     self.canvas.add(Rectangle(pos=(100, 0), size=(w, h)))
-    #     self.canvas.add(Color(1., 1., 0))
-    #     self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
+    def boundary(self):
+        self.canvas.add(Color(1, 5, 3))
+        self.canvas.add(Rectangle(pos=(100, 0), size=(600, 600)))
+        self.canvas.add(Color(1., 1., 0))
+        self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
 
 
     def paint(self, event, w, h):
@@ -73,7 +73,7 @@ class Arrows(FloatLayout):
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-        # self.painter.boundary(self.width, self.height)
+        self.painter.boundary()
 
         button_color = (0, 255, 255, .5)
         self.left_button = Button(text="Left", pos_hint={'x': .35, 'top': .3}, size_hint=(.1, .1), id='left',
