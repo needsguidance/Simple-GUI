@@ -18,17 +18,35 @@ X = 400
 class Canvas(Widget):
 
     def boundary(self):
-        self.canvas.add(Color(1, 5, 3))
-        self.canvas.add(Rectangle(pos=(100, 0), size=(600, 600)))
-        self.canvas.add(Color(1., 1., 0))
-        self.canvas.add(Rectangle(pos=(200, 300), size=(400, 200)))
+
+        """
+        On init, bounding box is set up, as well as background. Fixed value, non resizeable.
+
+        """
+
+        with self.canvas:
+
+            Color(0.4, 0.4, 0.4)
+            Rectangle(pos=(100, 0), size=(600, 600))
+            Color(0.09, 0.09, 0.09)
+            Rectangle(pos=(195, 310), size=(410, 220))
+
+            Color(1, 0, 0)
+            Line(rectangle=(195, 310, 410, 220))
+
 
 
     def paint(self, event, w, h):
-        token = event.id
-        # color = (1, 1, 1)  # Red Color
-        global X, Y
 
+        """
+        On button press, the canvas is painted on the direction our event.id directs. Uses canvas height and width
+        to calculate boundaries for painting.
+        :param event: button event
+        :param w: width of the whole canvas/widget
+        :param h: height of the whole canvas/widget
+        """
+        token = event.id
+        global X, Y
 
         # Increase/Decrease of coordinates dependant on token value passed on button press
 
@@ -54,8 +72,8 @@ class Canvas(Widget):
             elif X < w/4:
                 X = w/4
                 print("left")
-            elif Y < h/1.95:
-                Y = h/1.95
+            elif Y < h/1.90:
+                Y = h/1.90
                 print("down")
             Color(*color, mode='hsv')
             d = 5.  # diameter of ellipse
@@ -68,7 +86,7 @@ class Arrows(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        print(self.width,self.height)
+
         self.button_event = None
         parent = Widget()
         self.painter = Canvas()
@@ -110,9 +128,15 @@ class Arrows(FloatLayout):
         self.right_button.bind(on_press=self._on_press, on_release=self._on_release)
 
 
-    def clear_canvas(self, obj):
+    def clear_canvas(self, event):
+        """
+        On button press, canvas is cleared. Then, bounding box and background are repainted, and initial coords
+        are recalculated and set.
+        :param event: button event
+        """
+
         self.painter.canvas.clear()
-        # self.painter.boundary(self.width, self.height)
+        self.painter.boundary()
         global X, Y
         self.label.text = 'Center'
         X = self.width/2
