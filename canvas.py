@@ -1,3 +1,4 @@
+
 from functools import partial
 from random import random
 
@@ -75,6 +76,7 @@ class Canvas(Widget):
             elif Y < h/1.90:
                 Y = h/1.90
                 print("down")
+
             Color(*color, mode='hsv')
             d = 5.  # diameter of ellipse
 
@@ -86,6 +88,9 @@ class Arrows(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.button_event = None
+        self.arrow_velocity = 0.05
 
         self.button_event = None
         parent = Widget()
@@ -103,12 +108,15 @@ class Arrows(FloatLayout):
         self.label = Label(text="Center", pos_hint={'x': .45, 'top': .3}, size_hint=(.1, .1))
         self.right_button = Button(text="Right", pos_hint={'x': .55, 'top': .3}, size_hint=(.1, .1), id='right',
                                    background_color=button_color)
-        self.speed_button = Button(text="Speed", pos_hint={'x': .35, 'top': .5}, size_hint=(.1, .05), id='speed')
-        self.change_color_button = Button(text="Color", pos_hint={'x': .45, 'top': .5}, size_hint=(.1, .05), id='color')
-        self.clear_button = Button(text="Clear", pos_hint={'x': .55, 'top': .5}, size_hint=(.1, .05), id='clear')
+        self.inc_speed_button = Button(text="Fast", pos_hint={'x': .30, 'top': .5}, size_hint=(.1, .05), id='increase')
+        self.dec_speed_button = Button(text="Slow", pos_hint={'x': .40, 'top': .5}, size_hint=(.1, .05), id='decrease')
+
+        self.change_color_button = Button(text="Color", pos_hint={'x': .50, 'top': .5}, size_hint=(.1, .05), id='color')
+        self.clear_button = Button(text="Clear", pos_hint={'x': .60, 'top': .5}, size_hint=(.1, .05), id='clear')
 
         self.add_widget(parent)
-        self.add_widget(self.speed_button)
+        self.add_widget(self.inc_speed_button)
+        self.add_widget(self.dec_speed_button)
         self.add_widget(self.change_color_button)
         self.add_widget(self.clear_button)
         self.add_widget(self.left_button)
@@ -120,7 +128,9 @@ class Arrows(FloatLayout):
         # TODO: Add function for change color button
         self.change_color_button.bind(on_press=self.change_arrow_color)
         # TODO: Add function for change speed button
-        # self.speed_button.bind(on_press=self.change_arrow_speed)
+        self.inc_speed_button.bind(on_press=self.change_arrow_velocity)
+        self.dec_speed_button.bind(on_press=self.change_arrow_velocity)
+
         self.clear_button.bind(on_release=self.clear_canvas)
         self.left_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.top_button.bind(on_press=self._on_press, on_release=self._on_release)
@@ -148,7 +158,7 @@ class Arrows(FloatLayout):
         On button press a job is scheduled to paint the canvas, then the center button text is changed
         :param event: button event
         """
-        self.button_event = Clock.schedule_interval(partial(self.paint_canvas, event), 0.05)
+        self.button_event = Clock.schedule_interval(partial(self.paint_canvas, event), self.arrow_velocity)
         self.label.text = event.text
 
     def _on_release(self, event):
@@ -181,3 +191,14 @@ class Arrows(FloatLayout):
         """
         global color
         color = (random(), 1, 1)
+
+    def change_arrow_velocity(self, event):
+        token = event.id
+        """
+        Change arrow velocity on button event
+        :param event: button event
+        """
+        if token == 'increase':
+            self.arrow_velocity -= 0.01
+        if token == 'decrease':
+            self.arrow_velocity += 0.01
