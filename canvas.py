@@ -29,7 +29,7 @@ class Canvas(Widget):
         with self.canvas:
 
             Color(0.4, 0.4, 0.4)
-            Rectangle(pos=(100, 0), size=(600, 600))
+            Rectangle(pos=(150, 20), size=(500, 550))
             Color(0.09, 0.09, 0.09)
             Rectangle(pos=(195, 310), size=(410, 220))
 
