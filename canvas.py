@@ -9,7 +9,8 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
 global X, Y, color
-color = (1, 1, 1)  # Red Color
+# color = (1, 1, 1)  # Red Color
+color = (255, 1, 1, .7)  # Red Color
 # Initial coords.
 Y = 400
 X = 400
@@ -20,7 +21,7 @@ class Canvas(Widget):
     def paint(self, event, w, h):
         token = event.id
         # color = (1, 1, 1)  # Red Color
-        global X, Y
+        global X, Y, color
 
 
         # Increase/Decrease of coordinates dependant on token value passed on button press
@@ -61,27 +62,35 @@ class Arrows(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        # Initial variables values
+        global color
         self.button_event = None
+        self.arrow_velocity = 0.05
+        self.button_color = (0, 255, 255, .5)
 
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
-        button_color = (0, 255, 255, .5)
+
+        # Buttons instances
         self.left_button = Button(text="Left", pos_hint={'x': .35, 'top': .3}, size_hint=(.1, .1), id='left',
-                                  background_color=button_color)
+                                  background_color=self.button_color)
         self.top_button = Button(text="Top", pos_hint={'x': .45, 'top': .4}, size_hint=(.1, .1), id='top',
-                                 background_color=button_color)
+                                 background_color=self.button_color)
         self.bottom_button = Button(text="Bottom", pos_hint={'x': .45, 'top': .2}, size_hint=(.1, .1), id='bottom',
-                                    background_color=button_color)
+                                    background_color=self.button_color)
         self.label = Label(text="Center", pos_hint={'x': .45, 'top': .3}, size_hint=(.1, .1))
         self.right_button = Button(text="Right", pos_hint={'x': .55, 'top': .3}, size_hint=(.1, .1), id='right',
-                                   background_color=button_color)
-        self.speed_button = Button(text="Speed", pos_hint={'x': .35, 'top': .5}, size_hint=(.1, .05), id='speed')
-        self.change_color_button = Button(text="Color", pos_hint={'x': .45, 'top': .5}, size_hint=(.1, .05), id='color')
-        self.clear_button = Button(text="Clear", pos_hint={'x': .55, 'top': .5}, size_hint=(.1, .05), id='clear')
+                                   background_color=self.button_color)
+        self.inc_speed_button = Button(text="Fast", pos_hint={'x': .30, 'top': .5}, size_hint=(.1, .05), id='increase')
+        self.dec_speed_button = Button(text="Slow", pos_hint={'x': .40, 'top': .5}, size_hint=(.1, .05), id='decrease')
+        self.change_color_button = Button(text="Color", pos_hint={'x': .50, 'top': .5}, size_hint=(.1, .05), id='color')
+        self.clear_button = Button(text="Clear", pos_hint={'x': .60, 'top': .5}, size_hint=(.1, .05), id='clear')
 
         self.add_widget(parent)
-        self.add_widget(self.speed_button)
+        self.add_widget(self.inc_speed_button)
+        self.add_widget(self.dec_speed_button)
         self.add_widget(self.change_color_button)
         self.add_widget(self.clear_button)
         self.add_widget(self.left_button)
@@ -90,16 +99,19 @@ class Arrows(FloatLayout):
         self.add_widget(self.label)
         self.add_widget(self.right_button)
 
-        # TODO: Add function for change color button
-        self.change_color_button.bind(on_press=self.change_arrow_color)
-        # TODO: Add function for change speed button
-        # self.speed_button.bind(on_press=self.change_arrow_speed)
-        self.clear_button.bind(on_release=self.clear_canvas)
+        # Essential functionalities buttons
         self.left_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.top_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.bottom_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.right_button.bind(on_press=self._on_press, on_release=self._on_release)
 
+        # Additional functionalities buttons
+        self.change_color_button.bind(on_press=self.change_arrow_color)
+        self.inc_speed_button.bind(on_press=self.change_arrow_velocity)
+        self.dec_speed_button.bind(on_press=self.change_arrow_velocity)
+        self.clear_button.bind(on_release=self.clear_canvas)
+
+    # Custom Methods
     def clear_canvas(self, obj):
         self.painter.canvas.clear()
         global X, Y
@@ -112,7 +124,7 @@ class Arrows(FloatLayout):
         On button press a job is scheduled to paint the canvas, then the center button text is changed
         :param event: button event
         """
-        self.button_event = Clock.schedule_interval(partial(self.paint_canvas, event), 0.05)
+        self.button_event = Clock.schedule_interval(partial(self.paint_canvas, event), self.arrow_velocity)
         self.label.text = event.text
 
     def _on_release(self, event):
@@ -144,4 +156,15 @@ class Arrows(FloatLayout):
         :param event: button event
         """
         global color
-        color = (random(), 1, 1)
+        color = (random(), 1, 1, .7)
+
+    def change_arrow_velocity(self, event):
+        token = event.id
+        """
+        Change arrow velocity on button event
+        :param event: button event
+        """
+        if token == 'increase':
+            self.arrow_velocity -= 0.01
+        if token == 'decrease':
+            self.arrow_velocity += 0.01

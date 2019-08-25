@@ -6,7 +6,11 @@
 <<<<<<< HEAD
 =======
       <change beforePath="$PROJECT_DIR$/canvas.py" beforeDir="false" afterPath="$PROJECT_DIR$/canvas.py" afterDir="false" />
+<<<<<<< HEAD
 >>>>>>> button_hold
+=======
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+>>>>>>> e8f3abac38c7ac0769fa8db2b3d96e130d8ff0b4
     </list>
     <list id="e0b5fc8d-1ef5-418e-a210-3ed541dcf2e4" name="Do Not Commit" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -131,9 +135,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\crist\PycharmProjects\Simple-GUI\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -163,6 +167,7 @@
       <workItem from="1566498396205" duration="661000" />
       <workItem from="1566499073612" duration="2785000" />
       <workItem from="1566579659309" duration="3257000" />
+<<<<<<< HEAD
       <workItem from="1566597480611" duration="37000" />
 =======
       <workItem from="1566498010742" duration="2530000" />
@@ -170,6 +175,9 @@
       <workItem from="1566586990770" duration="61000" />
       <workItem from="1566587232050" duration="2237000" />
 >>>>>>> button_hold
+=======
+      <workItem from="1566587188149" duration="1327000" />
+>>>>>>> e8f3abac38c7ac0769fa8db2b3d96e130d8ff0b4
     </task>
     <task id="LOCAL-00001" summary="Add required plugin.">
       <created>1566500893785</created>
@@ -294,7 +302,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Add new buttons and layout." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Simple_GUI$main.coverage" NAME="main Coverage Results" MODIFIED="1566583696173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Simple_GUI$main.coverage" NAME="main Coverage Results" MODIFIED="1566746316468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/canvas.py">
