@@ -1,5 +1,4 @@
 from kivy.app import App
-
 from canvas import Arrows
 
 
