@@ -1,9 +1,10 @@
+
 from functools import partial
 from random import random
 
 from kivy.clock import Clock
-from kivy.graphics import Color, Ellipse
 from kivy.uix.button import Button
+from kivy.graphics import Color, Ellipse, Line, Rectangle
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
@@ -11,35 +12,70 @@ from kivy.uix.widget import Widget
 global X, Y, color
 color = (1, 1, 1)  # Red Color
 # Initial coords.
-X = 400
 Y = 400
+X = 400
 
 
 class Canvas(Widget):
 
-    def paint(self, event):
+    def boundary(self):
+
+        """
+        On init, bounding box is set up, as well as background. Fixed value, non resizeable.
+
+        """
+
+        with self.canvas:
+
+            Color(0.4, 0.4, 0.4)
+            Rectangle(pos=(100, 0), size=(600, 600))
+            Color(0.09, 0.09, 0.09)
+            Rectangle(pos=(195, 310), size=(410, 220))
+
+            Color(1, 0, 0)
+            Line(rectangle=(195, 310, 410, 220))
+
+
+
+    def paint(self, event, w, h):
+
+        """
+        On button press, the canvas is painted on the direction our event.id directs. Uses canvas height and width
+        to calculate boundaries for painting.
+        :param event: button event
+        :param w: width of the whole canvas/widget
+        :param h: height of the whole canvas/widget
+        """
         token = event.id
-        # color = (1, 1, 1)  # Red Color
         global X, Y
 
         # Increase/Decrease of coordinates dependant on token value passed on button press
 
         if token == 'left':
             X -= 2
-        if token == 'right':
+        elif token == 'right':
             X += 2
-        if token == 'top':
+        elif token == 'top':
             Y += 2
-        if token == 'bottom':
+        elif token == 'bottom':
             Y -= 2
 
         with self.canvas:
 
             # Temporary Boundaries Example
-            if X > 500:
-                X = 600
-            if Y > 500:
-                Y = 600
+            print(w,h)
+            if X > w - w/4:
+                X = w - w/4
+                print("right")
+            elif Y > h - h/8:
+                Y = h - h/8
+                print("up")
+            elif X < w/4:
+                X = w/4
+                print("left")
+            elif Y < h/1.90:
+                Y = h/1.90
+                print("down")
 
             Color(*color, mode='hsv')
             d = 5.  # diameter of ellipse
@@ -52,12 +88,16 @@ class Arrows(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
         self.button_event = None
         self.arrow_velocity = 0.05
 
+        self.button_event = None
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
+        self.painter.boundary()
+
         button_color = (0, 255, 255, .5)
         self.left_button = Button(text="Left", pos_hint={'x': .35, 'top': .3}, size_hint=(.1, .1), id='left',
                                   background_color=button_color)
@@ -97,12 +137,21 @@ class Arrows(FloatLayout):
         self.bottom_button.bind(on_press=self._on_press, on_release=self._on_release)
         self.right_button.bind(on_press=self._on_press, on_release=self._on_release)
 
-    def clear_canvas(self, obj):
+
+    def clear_canvas(self, event):
+        """
+        On button press, canvas is cleared. Then, bounding box and background are repainted, and initial coords
+        are recalculated and set.
+        :param event: button event
+        """
+
         self.painter.canvas.clear()
+        self.painter.boundary()
         global X, Y
-        X = 400
-        Y = 400
         self.label.text = 'Center'
+        X = self.width/2
+        Y = self.height/1.5
+
 
     def _on_press(self, event):
         """
@@ -132,7 +181,8 @@ class Arrows(FloatLayout):
         :param event: button event
         :param dt: delta-time
         """
-        self.painter.paint(event)
+
+        self.painter.paint(event, self.width, self.height)
 
     def change_arrow_color(self, event):
         """
