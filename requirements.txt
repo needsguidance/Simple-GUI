@@ -1,8 +1,8 @@
 kivy
 Pillow
 pypiwin32
-kivy_deps.sdl2
-kivy_deps.gstreamer
-kivy_deps.angle
-pylint
+kivy-deps.sdl2
+kivy-deps.gstreamer
+kivy-deps.angle
 kivy-deps.glew
+pylint
