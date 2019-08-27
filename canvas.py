@@ -1,9 +1,9 @@
+
 from functools import partial
 from random import random
-
 from kivy.clock import Clock
-from kivy.graphics import Color, Ellipse
 from kivy.uix.button import Button
+from kivy.graphics import Color, Ellipse, Line, Rectangle
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
@@ -12,17 +12,43 @@ global X, Y, color
 # color = (1, 1, 1)  # Red Color
 color = (255, 1, 1, .7)  # Red Color
 # Initial coords.
-Y = 400
 X = 400
+Y = 400
 
 
 class Canvas(Widget):
 
-    def paint(self, event, w, h):
-        token = event.id
-        # color = (1, 1, 1)  # Red Color
-        global X, Y, color
+    def boundary(self):
 
+        """
+        On init, bounding box is set up, as well as background. Fixed value, non resizeable.
+
+        """
+
+        with self.canvas:
+
+            Color(0.4, 0.4, 0.4)
+            Rectangle(pos=(150, 20), size=(500, 550))
+            Color(0.09, 0.09, 0.09)
+            Rectangle(pos=(195, 310), size=(410, 220))
+
+            Color(1, 0, 0)
+            Line(rectangle=(195, 310, 410, 220))
+
+
+
+    def paint(self, event, w, h):
+
+        """
+        On button press, the canvas is painted on the direction our event.id directs. Uses canvas height and width
+        to calculate boundaries for painting.
+        :param event: button event
+        :param w: width of the whole canvas/widget
+        :param h: height of the whole canvas/widget
+        """
+        token = event.id
+        print(w,h)
+        global X, Y, color
 
         # Increase/Decrease of coordinates dependant on token value passed on button press
 
@@ -38,7 +64,6 @@ class Canvas(Widget):
         with self.canvas:
 
             # Temporary Boundaries Example
-            print(w,h)
             if X > w - w/4:
                 X = w - w/4
                 print("right")
@@ -48,9 +73,10 @@ class Canvas(Widget):
             elif X < w/4:
                 X = w/4
                 print("left")
-            elif Y < h/2:
-                Y = h/2
+            elif Y < h/1.90:
+                Y = h/1.90
                 print("down")
+
             Color(*color, mode='hsv')
             d = 5.  # diameter of ellipse
 
@@ -69,9 +95,11 @@ class Arrows(FloatLayout):
         self.arrow_velocity = 0.05
         self.button_color = (0, 255, 255, .5)
 
+        self.button_event = None
         parent = Widget()
         self.painter = Canvas()
         parent.add_widget(self.painter)
+        self.painter.boundary()
 
         # Buttons instances
         self.left_button = Button(text="Left", pos_hint={'x': .35, 'top': .3}, size_hint=(.1, .1), id='left',
@@ -112,12 +140,19 @@ class Arrows(FloatLayout):
         self.clear_button.bind(on_release=self.clear_canvas)
 
     # Custom Methods
-    def clear_canvas(self, obj):
+    def clear_canvas(self, event):
+        """
+        On button press, canvas is cleared. Then, bounding box and background are repainted, and initial coords
+        are recalculated and set.
+        :param event: button event
+        """
         self.painter.canvas.clear()
+        self.painter.boundary()
         global X, Y
         self.label.text = 'Center'
         X = self.width/2
         Y = self.height/1.5
+
 
     def _on_press(self, event):
         """
