@@ -1,5 +1,5 @@
 from kivy.app import App
-from canvas import Arrows
+from canvas3 import Arrows
 
 
 class TestApp(App):

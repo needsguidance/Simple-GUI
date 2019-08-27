@@ -1,4 +1,3 @@
-
 from functools import partial
 from random import random
 from kivy.clock import Clock
@@ -9,43 +8,27 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
 global X, Y, color
-# color = (1, 1, 1)  # Red Color
 color = (255, 1, 1, .7)  # Red Color
 # Initial coords.
-X = 400
-Y = 400
+X = 800
+Y = 800
 
 
 class Canvas(Widget):
 
     def boundary(self):
 
-        """
-        On init, bounding box is set up, as well as background. Fixed value, non resizeable.
-
-        """
-
         with self.canvas:
 
             Color(0.4, 0.4, 0.4)
-            Rectangle(pos=(150, 20), size=(500, 550))
+            Rectangle(pos=(300, 40), size=(1000, 1100))
             Color(0.09, 0.09, 0.09)
-            Rectangle(pos=(195, 310), size=(410, 220))
+            Rectangle(pos=(390, 620), size=(820, 440))
 
             Color(1, 0, 0)
-            Line(rectangle=(195, 310, 410, 220))
-
-
+            Line(rectangle=(390, 620, 820, 440))
 
     def paint(self, event, w, h):
-
-        """
-        On button press, the canvas is painted on the direction our event.id directs. Uses canvas height and width
-        to calculate boundaries for painting.
-        :param event: button event
-        :param w: width of the whole canvas/widget
-        :param h: height of the whole canvas/widget
-        """
         token = event.id
         print(w,h)
         global X, Y, color
@@ -141,11 +124,6 @@ class Arrows(FloatLayout):
 
     # Custom Methods
     def clear_canvas(self, event):
-        """
-        On button press, canvas is cleared. Then, bounding box and background are repainted, and initial coords
-        are recalculated and set.
-        :param event: button event
-        """
         self.painter.canvas.clear()
         self.painter.boundary()
         global X, Y
@@ -155,50 +133,25 @@ class Arrows(FloatLayout):
 
 
     def _on_press(self, event):
-        """
-        On button press a job is scheduled to paint the canvas, then the center button text is changed
-        :param event: button event
-        """
         self.button_event = Clock.schedule_interval(partial(self.paint_canvas, event), self.arrow_velocity)
         self.label.text = event.text
 
     def _on_release(self, event):
-        """
-        On button release scheduled paint job is cancelled
-        :param event: button event
-        """
         Clock.unschedule(self.button_event)
 
     def on_touch_up(self, touch):
-        """
-        Used in conjunction with Button on_release functionality
-        :param touch: event
-        """
         Clock.unschedule(self.button_event)
 
     def paint_canvas(self, event, dt):
-        """
-        Paints canvas in the direction of the button event (i.e. Top, Bottom, Left or Right)
-        :param event: button event
-        :param dt: delta-time
-        """
-
         self.painter.paint(event, self.width, self.height)
 
     def change_arrow_color(self, event):
-        """
-        Change arrow color on button event
-        :param event: button event
-        """
         global color
         color = (random(), 1, 1, .7)
 
     def change_arrow_velocity(self, event):
         token = event.id
-        """
-        Change arrow velocity on button event
-        :param event: button event
-        """
+
         if token == 'increase':
             self.arrow_velocity -= 0.01
         if token == 'decrease':
